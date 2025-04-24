@@ -14,9 +14,14 @@ export const addAnimal = async (zooId, animalId, animalData) => {
 };
 
 //Agregar cuidadores
-export const addzookeeper = async (staff, idZookeeper) => {
+export const addzookeeper = async (staff, idZookeeper,) => {
   const zookeeperRef = doc(db, `Staff/${idZookeeper}`);
   await setDoc(zookeeperRef, { name: staff });
+};
+
+export const addEnclosures = async (idZookeeper, idEnclosures) => {
+  const EnclosuredRef = doc(db, `Staff/${idZookeeper}/enclosuresManaged/${idEnclosures}`);
+  await setDoc(EnclosuredRef, { name: idEnclosures });
 };
 
 // Función para obtener todos los animales de un zoológico
