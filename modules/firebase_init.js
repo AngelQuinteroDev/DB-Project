@@ -9,6 +9,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAgVj5FAzSRPn_7n-ZX1joUEcKrta0VCiM",
   authDomain: "superzoo-4d820.firebaseapp.com",
+  databaseURL: "https://superzoo-4d820-default-rtdb.firebaseio.com",
   projectId: "superzoo-4d820",
   storageBucket: "superzoo-4d820.firebasestorage.app",
   messagingSenderId: "82513931469",

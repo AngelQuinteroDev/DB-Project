@@ -1,196 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zoo Database</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom, #e0ffe0, #b3ffcc);
-      color: #005c2e;
-      text-align: center;
-      padding: 20px;
-      margin: 0;
-    }
-
-    h1 {
-      color: #009966;
-      font-size: 26px;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    div {
-      background: rgba(240, 255, 245, 0.95);
-      border: 2px solid #66cc99;
-      border-radius: 15px;
-      padding: 20px;
-      margin: 20px auto;
-      width: 50%;
-      box-shadow: 6px 6px 20px rgba(102, 204, 153, 0.4);
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
-
-    div:hover {
-      transform: scale(1.03);
-      box-shadow: 8px 8px 25px rgba(102, 204, 153, 0.5);
-    }
-
-    input {
-      padding: 12px;
-      border: 2px solid #33cc99;
-      border-radius: 8px;
-      width: 90%;
-      margin-top: 5px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    input:focus {
-      border: 2px solid #009966;
-    }
-
-    button {
-      background: linear-gradient(135deg, #33cc99, #009966);
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      box-shadow: 3px 3px 10px rgba(51, 204, 153, 0.4);
-      transition: all 0.3s ease-in-out;
-    }
-
-    button:hover {
-      background: linear-gradient(135deg, #009966, #006644);
-      transform: scale(1.07);
-      box-shadow: 5px 5px 15px rgba(51, 204, 153, 0.5);
-    }
-
-    #animalList div {
-      text-align: left;
-      padding: 15px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.95);
-      margin: 10px;
-      box-shadow: 4px 4px 15px rgba(51, 204, 153, 0.3);
-    }
-
-    #animalList h3 {
-      color: #009966;
-      font-weight: bold;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD de Firebase</title>
+  <script type="module" src="./modules/firestore_service.js"></script>
 </head>
 <body>
+  <h1>Ver Todos los Registros de la Base de Datos</h1>
 
-  <a href="queries.html">Queries</a>
+  <!-- Botón para cargar los registros -->
+  <button id="loadDataButton">Mostrar Datos</button>
 
-  <div>
-    <h1>Connected to Zoo Database</h1>
-    <button id="loadDataBtn">Show All Animals</button>
-  </div>
+  <script>
+    // Obtener el botón por su id
+    const loadDataButton = document.getElementById('loadDataButton');
 
-  <div>
-    <h1>Add Animal to the Database</h1>
-    <label for="docId">Animal ID:</label>
-    <input type="text" id="docId" placeholder="Ej: tigre001"><br><br>
-    <label for="name">Name:</label>
-    <input type="text" id="name" placeholder="Ej: Simba"><br><br>
-    <label for="species">Species:</label>
-    <input type="text" id="species" placeholder="Ej: León africano"><br><br>
-    <label for="habitat">Habitat:</label>
-    <input type="text" id="habitat" placeholder="Ej: Sabana"><br><br>
-    <label for="dangerous">Dangerous (true/false):</label>
-    <input type="text" id="dangerous" placeholder="Ej: true"><br><br>
-    <label for="arrivalDate">Arrival Date:</label>
-    <input type="datetime-local" id="arrivalDate"><br><br>
-    <button id="addDocBtn">Add Animal</button>
-  </div>
-
-  <div>
-    <h1>Get Animal by ID</h1>
-    <label for="getDocId">Animal ID:</label>
-    <input type="text" id="getDocId" placeholder="Ej: tigre001"><br><br>
-    <button id="getDocBtn">Get Animal</button>
-  </div>
-
-  <div>
-    <h1>Zoo Animals</h1>
-    <div id="animalList"></div>
-  </div>
-
-  <script type="module">
-    import { FirestoreService } from './modules/firestore_service.js';
-    const firestore = new FirestoreService("Zoologico");
-
-    document.getElementById("loadDataBtn").addEventListener("click", async () => {
-      const docs = await firestore.getAllDocuments();
-      const animalList = document.getElementById("animalList");
-      animalList.innerHTML = "";
-      docs.forEach(doc => {
-        const item = document.createElement("div");
-        item.innerHTML = `
-          <h3>${doc.name}</h3>
-          <p><strong>Species:</strong> ${doc.species}</p>
-          <p><strong>Habitat:</strong> ${doc.habitat}</p>
-          <p><strong>Dangerous:</strong> ${doc.dangerous ? "Yes" : "No"}</p>
-          <p><strong>Arrival:</strong> ${doc.arrivalDate.toDate().toLocaleDateString()}</p>
-        `;
-        animalList.appendChild(item);
-      });
-    });
-
-    document.getElementById("addDocBtn").addEventListener("click", async () => {
-      const docId = document.getElementById("docId").value.trim();
-      const name = document.getElementById("name").value.trim();
-      const species = document.getElementById("species").value.trim();
-      const habitat = document.getElementById("habitat").value.trim();
-      const dangerous = document.getElementById("dangerous").value.trim().toLowerCase() === 'true';
-      const arrivalDate = document.getElementById("arrivalDate").value;
-
-      if (!docId || !name || !species || !habitat || !arrivalDate) {
-        alert("Please fill in all fields.");
-        return;
-      }
-
-      const data = {
-        name, species, habitat, dangerous,
-        arrivalDate: new Date(arrivalDate)
-      };
-
-      await firestore.PostDocument(docId, data);
-    });
-
-    document.getElementById("getDocBtn").addEventListener("click", async () => {
-      const docId = document.getElementById("getDocId").value.trim();
-      if (!docId) {
-        alert("Please enter the animal ID");
-        return;
-      }
-
-      const doc = await firestore.getDocumentById(docId);
-      const animalList = document.getElementById("animalList");
-      animalList.innerHTML = "";
-
-      if (!doc) {
-        animalList.innerHTML = `<p style="color:red;">No animal found with ID: ${docId}</p>`;
-        return;
-      }
-
-      const item = document.createElement("div");
-      item.innerHTML = `
-        <h3>${doc.name}</h3>
-        <p><strong>Species:</strong> ${doc.species}</p>
-        <p><strong>Habitat:</strong> ${doc.habitat}</p>
-        <p><strong>Dangerous:</strong> ${doc.dangerous ? "Yes" : "No"}</p>
-        <p><strong>Arrival:</strong> ${doc.arrivalDate.toDate().toLocaleDateString()}</p>
-      `;
-      animalList.appendChild(item);
+    // Cuando el botón se haga clic, ejecutar la función
+    loadDataButton.addEventListener('click', async () => {
+      // Importar la función 'mostrarTodo' y llamarla
+      const { mostrarTodo } = await import('./modules/firestore_service.js');
+      await mostrarTodo();  // Ejecutar la función que muestra los datos
     });
   </script>
 </body>
