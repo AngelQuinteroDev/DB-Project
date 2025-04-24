@@ -57,3 +57,30 @@ export async function mostrarTodo() {
     }
   }
 }
+
+
+// Query compuesta: Filtrar animales por zoo_id, especie y edad
+export async function filtrarAnimalesCompuesto(zooId, species, minAge) {
+  try {
+    const animalsCollection = collection(db, "Animals"); // Referencia a la colección "Animals"
+    const q = query(
+      animalsCollection,
+      where("zoo_id", "==", zooId), // Condición 1: ID del zoológico
+      where("species", "==", species), // Condición 2: Especie
+      where("age", ">", minAge) // Condición 3: Edad mayor a minAge
+    );
+
+    const querySnapshot = await getDocs(q); // Ejecutar la consulta
+
+    const animals = [];
+    querySnapshot.forEach((doc) => {
+      animals.push({ id: doc.id, ...doc.data() }); // Agregar cada documento al array
+    });
+
+    console.log("Animales filtrados:", animals);
+    return animals;
+  } catch (error) {
+    console.error("Error al realizar la consulta compuesta:", error);
+    throw error;
+  }
+}
