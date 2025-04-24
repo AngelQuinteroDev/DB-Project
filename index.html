@@ -293,10 +293,10 @@
   <button id="loadDataButton">Mostrar Datos</button>
   <div>
     <h2>Add Zoo</h2>
-    <label for="zooId">ID del Zoológico:</label>
+    <label for="zooId">Zoo ID:</label>
     <input type="text" id="zooId" placeholder="Ejemplo: zoo123">
     
-    <label for="zooName">Nombre del Zoológico:</label>
+    <label for="zooName">Zoo Name:</label>
     <input type="text" id="zooName" placeholder="Ejemplo: Zoológico Nacional">
   
     <button id="saveZooBtn">Guardar Zoológico</button>
@@ -304,22 +304,22 @@
 
   <div>
     <h2>Add Animal</h2>
-    <label for="zooIdAnimal">ID del Zoológico:</label>
+    <label for="zooIdAnimal">Zoo ID:</label>
     <input type="text" id="zooIdAnimal" placeholder="Ejemplo: zoo123">
     
-    <label for="animalId">ID del Animal:</label>
+    <label for="animalId">Animal ID:</label>
     <input type="text" id="animalId" placeholder="Ejemplo: animal456">
     
-    <label for="animalName">Nombre del Animal:</label>
+    <label for="animalName"> Animal name:</label>
     <input type="text" id="animalName" placeholder="Ejemplo: León">
   
-    <label for="animalSpecies">Especie del Animal:</label>
+    <label for="animalSpecies">Animal Species:</label>
     <input type="text" id="animalSpecies" placeholder="Ejemplo: León">
   
-    <label for="animalAge">Edad del Animal (en años):</label>
+    <label for="animalAge">Animal Age:</label>
     <input type="number" id="animalAge" placeholder="Ejemplo: 5">
   
-    <button id="addAnimalBtn">Agregar Animal</button>
+    <button id="addAnimalBtn">Add Animal</button>
   </div>
 
   <div>
@@ -346,11 +346,11 @@
   </div>
 
   <div>
-    <h2>Ver Animales de un Zoológico</h2>
+    <h2>See Zoo Animals</h2>
     <label for="zooIdView">ID del Zoológico:</label>
     <input type="text" id="zooIdView" placeholder="Ejemplo: zoo123">
   
-    <button id="viewAnimalsBtn">Ver Animales</button>
+    <button id="viewAnimalsBtn">See Animals</button>
   
     <div id="animalList"></div>
   </div>
@@ -369,18 +369,34 @@
     <button id="addEnclosuresBtn">Add Enclosures</button>
   </div>
 
-  <div>
-    <h2>Filtrar Animales por Especie</h2>
+  <!--<div>
+    <h2>Filter Animals by Species</h2>
     <label for="zooIdSpecies">ID del Zoológico:</label>
     <input type="text" id="zooIdSpecies" placeholder="Ejemplo: zoo123">
   
     <label for="speciesFilter">Especie:</label>
     <input type="text" id="speciesFilter" placeholder="Ejemplo: León">
   
-    <button id="filterBySpeciesBtn">Filtrar por Especie</button>
+    <button id="filterBySpeciesBtn">Filter by Specie</button>
   
     <div id="speciesList"></div>
+  </div>-->
+
+  <div>
+    <h2>Filter Animals </h2>
+    <label for="zooIdComplex">Zoo ID:</label>
+    <input type="text" id="zooIdComplex" placeholder="Ejemplo: zoo123">
+  
+    <label for="speciesComplex">Specie:</label>
+    <input type="text" id="speciesComplex" placeholder="Ejemplo: León">
+  
+    <label for="minAgeComplex">Minimum age:</label>
+    <input type="number" id="minAgeComplex" placeholder="Ejemplo: 3">
+  
+    <button id="filterAnimalsComplexBtn">Filter Animals</button>
   </div>
+  
+  <div id="complexQueryResults"></div>
   
   <script type="module">
     import { createZoo, addAnimal, addzookeeper, addEnclosures, getAnimalsByZoo, getAnimalsBySpecies } from './modules/firestore_service.js';
@@ -395,7 +411,7 @@
       const zooId = document.getElementById("zooId").value;
       const zooName = document.getElementById("zooName").value;
       await createZoo(zooId, zooName);
-      alert("Zoológico guardado.");
+      alert("Zoo saved.");
     });
 
     document.getElementById("saveZookeeperBtn").addEventListener("click", async () => {
@@ -413,7 +429,7 @@
       const age = parseInt(document.getElementById("animalAge").value);
       const animalData = { name, species, age };
       await addAnimal(zooId, animalId, animalData);
-      alert("Animal agregado.");
+      alert("Animal added.");
     });
 
     document.getElementById("addEnclosuresBtn").addEventListener("click", async () => {
@@ -421,7 +437,7 @@
       const enclosuresManaged = document.getElementById("enclosuresManaged").value;
       const idEnclosures = document.getElementById("idEnclosures").value;
       await addEnclosures(staffenclosures, idEnclosures);
-      alert("Enclosures add.");
+      alert("Enclosures added.");
     });
 
     document.getElementById("viewAnimalsBtn").addEventListener("click", async () => {
@@ -450,6 +466,8 @@
         speciesList.appendChild(card);
       });
     });
+
+    
   </script>
 </body>
 </html>
