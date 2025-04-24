@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -9,7 +9,7 @@
 <body>
   <h1>Ver Todos los Registros de la Base de Datos</h1>
 
-  <!-- Botón para cargar los registros -->
+  <!- Botón para cargar los registros ->
   <button id="loadDataButton">Mostrar Datos</button>
   <div>
     <h2>Add Zoo</h2>
@@ -205,6 +205,251 @@
       speciesList.appendChild(card);
     });
   });
+  </script>
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD de Firebase</title>
+  <script type="module" src="./modules/firestore_service.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #e8f5e9, #ffffff);
+      margin: 0;
+      padding: 20px;
+      color: #2e7d32;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1b5e20;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: #388e3c;
+      border-left: 6px solid #66bb6a;
+      padding-left: 10px;
+      margin-top: 40px;
+    }
+
+    div {
+      max-width: 900px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #66bb6a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #43a047;
+    }
+
+    .animal-card {
+      background-color: #f1f8e9;
+      border-left: 6px solid #81c784;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ver Todos los Registros de la Base de Datos</h1>
+
+  <button id="loadDataButton">Mostrar Datos</button>
+  <div>
+    <h2>Add Zoo</h2>
+    <label for="zooId">ID del Zoológico:</label>
+    <input type="text" id="zooId" placeholder="Ejemplo: zoo123">
+    
+    <label for="zooName">Nombre del Zoológico:</label>
+    <input type="text" id="zooName" placeholder="Ejemplo: Zoológico Nacional">
+  
+    <button id="saveZooBtn">Guardar Zoológico</button>
+  </div>
+
+  <div>
+    <h2>Add Animal</h2>
+    <label for="zooIdAnimal">ID del Zoológico:</label>
+    <input type="text" id="zooIdAnimal" placeholder="Ejemplo: zoo123">
+    
+    <label for="animalId">ID del Animal:</label>
+    <input type="text" id="animalId" placeholder="Ejemplo: animal456">
+    
+    <label for="animalName">Nombre del Animal:</label>
+    <input type="text" id="animalName" placeholder="Ejemplo: León">
+  
+    <label for="animalSpecies">Especie del Animal:</label>
+    <input type="text" id="animalSpecies" placeholder="Ejemplo: León">
+  
+    <label for="animalAge">Edad del Animal (en años):</label>
+    <input type="number" id="animalAge" placeholder="Ejemplo: 5">
+  
+    <button id="addAnimalBtn">Agregar Animal</button>
+  </div>
+
+  <div>
+    <h2>Add ZooKeeper</h2>
+    <label for="staff">Staff:</label>
+    <input type="text" id="staff" placeholder="Ejemplo: Staff1">
+    
+    <label for="idZookeeper">Zookeeper ID:</label>
+    <input type="text" id="idZookeeper" placeholder="Ejemplo: Juan">
+
+    <label for="nameZookeeper">Zookeeper name.:</label>
+    <input type="text" id="nameZookeeper" placeholder="Ejemplo: Juan">
+
+    <label for="hireDate">Hire date:</label>
+    <input type="date" id="hireDate" placeholder="Ejemplo: 15/02/24">
+
+    <label for="lastName">Lastname:</label>
+    <input type="text" id="lastName" placeholder="Ejemplo: Rodriguez">
+
+    <label for="phone">Phone:</label>
+    <input type="number" id="phone" placeholder="Ejemplo: 3118025836">
+  
+    <button id="saveZookeeperBtn">Guardar Zookeeper</button>
+  </div>
+
+  <div>
+    <h2>Ver Animales de un Zoológico</h2>
+    <label for="zooIdView">ID del Zoológico:</label>
+    <input type="text" id="zooIdView" placeholder="Ejemplo: zoo123">
+  
+    <button id="viewAnimalsBtn">Ver Animales</button>
+  
+    <div id="animalList"></div>
+  </div>
+
+  <div>
+    <h2>Add enclosures</h2>
+    <label for="staffenclosures">Staff:</label>
+    <input type="text" id="staffenclosures" placeholder="Ejemplo: Staff1">
+    
+    <label for="enclosuresManaged">Enclosures Managed:</label>
+    <input type="text" id="enclosuresManaged" placeholder="Ejemplo: 1234">
+    
+    <label for="idEnclosures">Enclosures:</label>
+    <input type="text" id="idEnclosures" placeholder="Ejemplo: LLano">
+  
+    <button id="addEnclosuresBtn">Add Enclosures</button>
+  </div>
+
+  <div>
+    <h2>Filtrar Animales por Especie</h2>
+    <label for="zooIdSpecies">ID del Zoológico:</label>
+    <input type="text" id="zooIdSpecies" placeholder="Ejemplo: zoo123">
+  
+    <label for="speciesFilter">Especie:</label>
+    <input type="text" id="speciesFilter" placeholder="Ejemplo: León">
+  
+    <button id="filterBySpeciesBtn">Filtrar por Especie</button>
+  
+    <div id="speciesList"></div>
+  </div>
+  
+  <script type="module">
+    import { createZoo, addAnimal, addzookeeper, addEnclosures, getAnimalsByZoo, getAnimalsBySpecies } from './modules/firestore_service.js';
+  
+    const loadDataButton = document.getElementById('loadDataButton');
+    loadDataButton.addEventListener('click', async () => {
+      const { mostrarTodo } = await import('./modules/firestore_service.js');
+      await mostrarTodo();
+    });
+
+    document.getElementById("saveZooBtn").addEventListener("click", async () => {
+      const zooId = document.getElementById("zooId").value;
+      const zooName = document.getElementById("zooName").value;
+      await createZoo(zooId, zooName);
+      alert("Zoológico guardado.");
+    });
+
+    document.getElementById("saveZookeeperBtn").addEventListener("click", async () => {
+      const Staff = document.getElementById("staff").value;
+      const idZookeeper = document.getElementById("idZookeeper").value;
+      await addzookeeper(Staff, idZookeeper);
+      alert("Zookeeper guardado.");
+    });
+
+    document.getElementById("addAnimalBtn").addEventListener("click", async () => {
+      const zooId = document.getElementById("zooIdAnimal").value;
+      const animalId = document.getElementById("animalId").value;
+      const name = document.getElementById("animalName").value;
+      const species = document.getElementById("animalSpecies").value;
+      const age = parseInt(document.getElementById("animalAge").value);
+      const animalData = { name, species, age };
+      await addAnimal(zooId, animalId, animalData);
+      alert("Animal agregado.");
+    });
+
+    document.getElementById("addEnclosuresBtn").addEventListener("click", async () => {
+      const staffenclosures = document.getElementById("staffenclosures").value;
+      const enclosuresManaged = document.getElementById("enclosuresManaged").value;
+      const idEnclosures = document.getElementById("idEnclosures").value;
+      await addEnclosures(staffenclosures, idEnclosures);
+      alert("Enclosures add.");
+    });
+
+    document.getElementById("viewAnimalsBtn").addEventListener("click", async () => {
+      const zooId = document.getElementById("zooIdView").value;
+      const animals = await getAnimalsByZoo(zooId);
+      const animalList = document.getElementById("animalList");
+      animalList.innerHTML = "";
+      animals.forEach(animal => {
+        const card = document.createElement("div");
+        card.className = "animal-card";
+        card.textContent = `🐾 ${animal.name} (${animal.species}) - ${animal.age} años`;
+        animalList.appendChild(card);
+      });
+    });
+
+    document.getElementById("filterBySpeciesBtn").addEventListener("click", async () => {
+      const zooId = document.getElementById("zooIdSpecies").value;
+      const species = document.getElementById("speciesFilter").value;
+      const animals = await getAnimalsBySpecies(zooId, species);
+      const speciesList = document.getElementById("speciesList");
+      speciesList.innerHTML = "";
+      animals.forEach(animal => {
+        const card = document.createElement("div");
+        card.className = "animal-card";
+        card.textContent = `🦎 ${animal.name} - ${animal.species}`;
+        speciesList.appendChild(card);
+      });
+    });
   </script>
 </body>
 </html>
