@@ -7,6 +7,8 @@ import {
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from './firebase-init.js';
 
+
+
 document.getElementById("saveZooBtn").addEventListener("click", async () => {
   const id = document.getElementById("zooId").value;
   const name = document.getElementById("zooName").value;

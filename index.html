@@ -11,8 +11,75 @@
 
   <!-- Botón para cargar los registros -->
   <button id="loadDataButton">Mostrar Datos</button>
+  <div>
+    <h2>Crear un Zoológico</h2>
+    <label for="zooId">ID del Zoológico:</label>
+    <input type="text" id="zooId" placeholder="Ejemplo: zoo123">
+    
+    <label for="zooName">Nombre del Zoológico:</label>
+    <input type="text" id="zooName" placeholder="Ejemplo: Zoológico Nacional">
+  
+    <button id="saveZooBtn">Guardar Zoológico</button>
+  </div>
 
-  <script>
+  <div>
+    <h2>Agregar un Animal</h2>
+    <label for="zooIdAnimal">ID del Zoológico:</label>
+    <input type="text" id="zooIdAnimal" placeholder="Ejemplo: zoo123">
+    
+    <label for="animalId">ID del Animal:</label>
+    <input type="text" id="animalId" placeholder="Ejemplo: animal456">
+    
+    <label for="animalName">Nombre del Animal:</label>
+    <input type="text" id="animalName" placeholder="Ejemplo: León">
+  
+    <label for="animalSpecies">Especie del Animal:</label>
+    <input type="text" id="animalSpecies" placeholder="Ejemplo: León">
+  
+    <label for="animalAge">Edad del Animal (en años):</label>
+    <input type="number" id="animalAge" placeholder="Ejemplo: 5">
+  
+    <button id="addAnimalBtn">Agregar Animal</button>
+  </div>
+
+  <div>
+    <h2>Add ZooKeeper</h2>
+    <label for="staff">Staff:</label>
+    <input type="text" id="staff" placeholder="Ejemplo: Staff1">
+    
+    <label for="idZookeeper">Nombre del Zoológico:</label>
+    <input type="text" id="idZookeeper" placeholder="Ejemplo: Juan">
+  
+    <button id="saveZookeeperBtn">Guardar Zookeeper</button>
+  </div>
+
+  <div>
+    <h2>Ver Animales de un Zoológico</h2>
+    <label for="zooIdView">ID del Zoológico:</label>
+    <input type="text" id="zooIdView" placeholder="Ejemplo: zoo123">
+  
+    <button id="viewAnimalsBtn">Ver Animales</button>
+  
+    <div id="animalList"></div>
+  </div>
+
+  <div>
+    <h2>Filtrar Animales por Especie</h2>
+    <label for="zooIdSpecies">ID del Zoológico:</label>
+    <input type="text" id="zooIdSpecies" placeholder="Ejemplo: zoo123">
+  
+    <label for="speciesFilter">Especie:</label>
+    <input type="text" id="speciesFilter" placeholder="Ejemplo: León">
+  
+    <button id="filterBySpeciesBtn">Filtrar por Especie</button>
+  
+    <div id="speciesList"></div>
+  </div>
+  
+
+  <script type="module">
+    import { createZoo, addAnimal, addzookeeper, getAnimalsByZoo, getAnimalsBySpecies } from './modules/firestore_service.js';
+  
     // Obtener el botón por su id
     const loadDataButton = document.getElementById('loadDataButton');
 
@@ -22,6 +89,78 @@
       const { mostrarTodo } = await import('./modules/firestore_service.js');
       await mostrarTodo();  // Ejecutar la función que muestra los datos
     });
+
+    // Crear Zoológico
+  document.getElementById("saveZooBtn").addEventListener("click", async () => {
+    const zooId = document.getElementById("zooId").value;
+    const zooName = document.getElementById("zooName").value;
+    
+    // Llamamos a la función para guardar el zoológico
+    await createZoo(zooId, zooName);
+    alert("Zoológico guardado.");
+  });
+
+      // Crear Zoológico
+      document.getElementById("saveZookeeperBtn").addEventListener("click", async () => {
+        const Staff = document.getElementById("staff").value;
+        const idZookeeper = document.getElementById("idZookeeper").value;
+        
+        // Llamamos a la función para guardar el zoológico
+        await addzookeeper(Staff, idZookeeper);
+        alert("Zookeeper guardado.");
+      });
+
+  // Agregar Animal
+  document.getElementById("addAnimalBtn").addEventListener("click", async () => {
+    const zooId = document.getElementById("zooIdAnimal").value;
+    const animalId = document.getElementById("animalId").value;
+    const name = document.getElementById("animalName").value;
+    const species = document.getElementById("animalSpecies").value;
+    const age = parseInt(document.getElementById("animalAge").value);
+
+    const animalData = { name, species, age };
+
+    // Llamamos a la función para agregar el animal
+    await addAnimal(zooId, animalId, animalData);
+    alert("Animal agregado.");
+  });
+
+  // Ver Animales de un Zoológico
+  document.getElementById("viewAnimalsBtn").addEventListener("click", async () => {
+    const zooId = document.getElementById("zooIdView").value;
+    
+    // Llamamos a la función para obtener los animales del zoológico
+    const animals = await getAnimalsByZoo(zooId);
+    
+    // Mostramos los animales en la página
+    const animalList = document.getElementById("animalList");
+    animalList.innerHTML = "";
+    animals.forEach(animal => {
+      const card = document.createElement("div");
+      card.className = "animal-card";
+      card.textContent = `🐾 ${animal.name} (${animal.species}) - ${animal.age} años`;
+      animalList.appendChild(card);
+    });
+  });
+
+  // Filtrar Animales por Especie
+  document.getElementById("filterBySpeciesBtn").addEventListener("click", async () => {
+    const zooId = document.getElementById("zooIdSpecies").value;
+    const species = document.getElementById("speciesFilter").value;
+    
+    // Llamamos a la función para obtener los animales filtrados
+    const animals = await getAnimalsBySpecies(zooId, species);
+    
+    // Mostramos los animales filtrados
+    const speciesList = document.getElementById("speciesList");
+    speciesList.innerHTML = "";
+    animals.forEach(animal => {
+      const card = document.createElement("div");
+      card.className = "animal-card";
+      card.textContent = `🦎 ${animal.name} - ${animal.species}`;
+      speciesList.appendChild(card);
+    });
+  });
   </script>
 </body>
 </html>
