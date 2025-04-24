@@ -500,19 +500,39 @@
       });
     });
 
-    document.getElementById("filterBySpeciesBtn").addEventListener("click", async () => {
-      const zooId = document.getElementById("zooIdSpecies").value;
-      const species = document.getElementById("speciesFilter").value;
-      const animals = await getAnimalsBySpecies(zooId, species);
-      const speciesList = document.getElementById("speciesList");
-      speciesList.innerHTML = "";
-      animals.forEach(animal => {
-        const card = document.createElement("div");
-        card.className = "animal-card";
-        card.textContent = `🦎 ${animal.name} - ${animal.species}`;
-        speciesList.appendChild(card);
-      });
-    });
+    document.getElementById("filterAnimalsComplexBtn").addEventListener("click", async () => {
+  const { filtrarAnimalesCompuesto } = await import('./modules/firestore_service.js');
+
+  // Obtener los valores de los campos de texto
+  const zooId = document.getElementById("zooIdComplex").value;
+  const species = document.getElementById("speciesComplex").value;
+  const minAge = parseInt(document.getElementById("minAgeComplex").value, 10);
+
+  // Validar que los campos no estén vacíos
+  if (!zooId || !species || isNaN(minAge)) {
+    alert("Por favor, completa todos los campos.");
+    return;
+  }
+
+  // Llamar a la función para filtrar animales
+  const animals = await filtrarAnimalesCompuesto(zooId, species, minAge);
+
+  // Mostrar los resultados en la página
+  const resultsContainer = document.getElementById("complexQueryResults");
+  resultsContainer.innerHTML = ""; // Limpiar resultados previos
+  if (animals.length === 0) {
+    resultsContainer.textContent = "No se encontraron animales que coincidan con los criterios.";
+    return;
+  }
+
+  animals.forEach(animal => {
+    const card = document.createElement("div");
+    card.className = "animal-card";
+    card.textContent = `🦎 ${animal.name} - ${animal.species} (${animal.age} años)`;
+    resultsContainer.appendChild(card);
+  });
+});
+  
 
     
   </script>
