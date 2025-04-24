@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Zoológico - CRUD Firestore</title>
+  <script type="module" src="main.js" defer></script>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f4f8; }
+    section { margin-bottom: 30px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    input, button, select { margin: 5px; padding: 8px; }
+    label { display: block; margin-top: 10px; }
+    .animal-card { border: 1px solid #ccc; padding: 10px; margin: 5px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+
+  <h1>Zoológico CRUD - Firestore</h1>
+
+  <section>
+    <h2>Crear o Editar Zoo</h2>
+    <input id="zooId" placeholder="ID del Zoo" />
+    <input id="zooName" placeholder="Nombre del Zoo" />
+    <button id="saveZooBtn">Guardar Zoo</button>
+  </section>
+
+  <section>
+    <h2>Ver Animales de un Zoo</h2>
+    <input id="zooIdView" placeholder="ID del Zoo" />
+    <button id="viewAnimalsBtn">Ver Animales</button>
+    <div id="animalList"></div>
+  </section>
+
+  <section>
+    <h2>Agregar Animal</h2>
+    <input id="zooIdAnimal" placeholder="ID del Zoo" />
+    <input id="animalId" placeholder="ID del Animal" />
+    <input id="animalName" placeholder="Nombre" />
+    <input id="animalSpecies" placeholder="Especie" />
+    <input id="animalAge" type="number" placeholder="Edad" />
+    <button id="addAnimalBtn">Agregar Animal</button>
+  </section>
+
+  <section>
+    <h2>Consultar por especie</h2>
+    <input id="zooIdSpecies" placeholder="ID del Zoo" />
+    <input id="speciesFilter" placeholder="Especie" />
+    <button id="filterBySpeciesBtn">Filtrar</button>
+    <div id="speciesList"></div>
+  </section>
+
+  <section>
+    <h2>Animales ordenados por edad</h2>
+    <input id="zooIdSort" placeholder="ID del Zoo" />
+    <button id="sortByAgeBtn">Ordenar</button>
+    <div id="sortedList"></div>
+  </section>
+
+  <section>
+    <h2>Agregar Staff (Zookeeper)</h2>
+    <input id="zookeeperId" placeholder="ID del cuidador" />
+    <input id="zookeeperName" placeholder="Nombre" />
+    <button id="addZookeeperBtn">Agregar Cuidador</button>
+  </section>
+  
+  <section>
+    <h2>Asignar Jaula a Zookeeper</h2>
+    <input id="zookeeperAssignId" placeholder="ID del cuidador" />
+    <input id="enclosureId" placeholder="ID de la jaula" />
+    <button id="assignEnclosureBtn">Asignar Jaula</button>
+  </section>
+  
+  <section>
+    <h2>Agregar Animal a Jaula de Zookeeper</h2>
+    <input id="zookeeperIdAnimal" placeholder="ID del cuidador" />
+    <input id="enclosureIdAnimal" placeholder="ID de la jaula" />
+    <input id="zooAnimalId" placeholder="ID del animal (desde zoo)" />
+    <input id="animalNameZK" placeholder="Nombre del animal" />
+    <button id="addAnimalToZookeeperBtn">Asignar Animal</button>
+  </section>
+  
+  <section>
+    <h2>Ver Enclosures y Animales de un Zookeeper</h2>
+    <input id="zookeeperToView" placeholder="ID del cuidador" />
+    <button id="viewZookeeperDataBtn">Ver Datos</button>
+    <div id="zookeeperEnclosures"></div>
+  </section>
+  
+
+</body>
+</html>
