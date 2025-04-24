@@ -1,266 +1,10 @@
-<!--<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRUD de Firebase</title>
-  <script type="module" src="./modules/firestore_service.js"></script>
-</head>
-<body>
-  <h1>Ver Todos los Registros de la Base de Datos</h1>
 
-  <!- Botón para cargar los registros ->
-  <button id="loadDataButton">Mostrar Datos</button>
-  <div>
-    <h2>Add Zoo</h2>
-    <label for="zooId">ID del Zoológico:</label>
-    <input type="text" id="zooId" placeholder="Ejemplo: zoo123">
-    
-    <label for="zooName">Nombre del Zoológico:</label>
-    <input type="text" id="zooName" placeholder="Ejemplo: Zoológico Nacional">
-  
-    <button id="saveZooBtn">Guardar Zoológico</button>
-  </div>
-
-  <div>
-    <h2>Add Animal</h2>
-    <label for="zooIdAnimal">ID del Zoológico:</label>
-    <input type="text" id="zooIdAnimal" placeholder="Ejemplo: zoo123">
-    
-    <label for="animalId">ID del Animal:</label>
-    <input type="text" id="animalId" placeholder="Ejemplo: animal456">
-    
-    <label for="animalName">Nombre del Animal:</label>
-    <input type="text" id="animalName" placeholder="Ejemplo: León">
-  
-    <label for="animalSpecies">Especie del Animal:</label>
-    <input type="text" id="animalSpecies" placeholder="Ejemplo: León">
-  
-    <label for="animalAge">Edad del Animal (en años):</label>
-    <input type="number" id="animalAge" placeholder="Ejemplo: 5">
-  
-    <button id="addAnimalBtn">Agregar Animal</button>
-  </div>
-
-  <div>
-    <h2>Add ZooKeeper</h2>
-    <label for="staff">Staff:</label>
-    <input type="text" id="staff" placeholder="Ejemplo: Staff1">
-    
-    <label for="idZookeeper">Zookeeper ID:</label>
-    <input type="text" id="idZookeeper" placeholder="Ejemplo: Juan">
-
-    <label for="nameZookeeper">Zookeeper name.:</label>
-    <input type="text" id="nameZookeeper" placeholder="Ejemplo: Juan">
-
-    <label for="hireDate">Hire date:</label>
-    <input type="date" id="hireDate" placeholder="Ejemplo: 15/02/24">
-
-    <label for="lastName">Lastname:</label>
-    <input type="text" id="lastName" placeholder="Ejemplo: Rodriguez">
-
-    <label for="phone">Phone:</label>
-    <input type="number" id="phone" placeholder="Ejemplo: 3118025836">
-  
-    <button id="saveZookeeperBtn">Guardar Zookeeper</button>
-  </div>
-
-  <div>
-    <h2>Ver Animales de un Zoológico</h2>
-    <label for="zooIdView">ID del Zoológico:</label>
-    <input type="text" id="zooIdView" placeholder="Ejemplo: zoo123">
-  
-    <button id="viewAnimalsBtn">Ver Animales</button>
-  
-    <div id="animalList"></div>
-  </div>
-
-  <div>
-    <h2>Add enclosures</h2>
-    <label for="staffenclosures">Staff:</label>
-    <input type="text" id="staffenclosures" placeholder="Ejemplo: Staff1">
-    
-    <label for="enclosuresManaged">Enclosures Managed:</label>
-    <input type="text" id="enclosuresManaged" placeholder="Ejemplo: 1234">
-    
-    <label for="idEnclosures">Enclosures:</label>
-    <input type="text" id="idEnclosures" placeholder="Ejemplo: LLano">
-  
-    <button id="addEnclosuresBtn">Add Enclosures</button>
-  </div>
-
-  <div>
-    <h2>Filtrar Animales por Especie</h2>
-    <label for="zooIdSpecies">ID del Zoológico:</label>
-    <input type="text" id="zooIdSpecies" placeholder="Ejemplo: zoo123">
-  
-    <label for="speciesFilter">Especie:</label>
-    <input type="text" id="speciesFilter" placeholder="Ejemplo: León">
-  
-    <button id="filterBySpeciesBtn">Filtrar por Especie</button>
-  
-    <div id="speciesList"></div>
-  </div>
-  <div>
-    <h2>Filtrar Animales (Query Compuesta)</h2>
-    <label for="zooIdComplex">ID del Zoológico:</label>
-    <input type="text" id="zooIdComplex" placeholder="Ejemplo: zoo123">
-  
-    <label for="speciesComplex">Especie:</label>
-    <input type="text" id="speciesComplex" placeholder="Ejemplo: León">
-  
-    <label for="minAgeComplex">Edad Mínima:</label>
-    <input type="number" id="minAgeComplex" placeholder="Ejemplo: 3">
-  
-    <button id="filterAnimalsComplexBtn">Filtrar Animales</button>
-  </div>
-  
-  <div id="complexQueryResults"></div>
-
-  <script type="module">
-    import { createZoo, addAnimal, addzookeeper, addEnclosures, getAnimalsByZoo, getAnimalsBySpecies } from './modules/firestore_service.js';
-  
-    // Obtener el botón por su id
-    const loadDataButton = document.getElementById('loadDataButton');
-
-    // Cuando el botón se haga clic, ejecutar la función
-    loadDataButton.addEventListener('click', async () => {
-      // Importar la función 'mostrarTodo' y llamarla
-      const { mostrarTodo } = await import('./modules/firestore_service.js');
-      await mostrarTodo();  // Ejecutar la función que muestra los datos
-    });
-
-    // Crear Zoológico
-  document.getElementById("saveZooBtn").addEventListener("click", async () => {
-    const zooId = document.getElementById("zooId").value;
-    const zooName = document.getElementById("zooName").value;
-    
-    // Llamamos a la función para guardar el zoológico
-    await createZoo(zooId, zooName);
-    alert("Zoológico guardado.");
-  });
-
-      // Crear Zoológico
-      document.getElementById("saveZookeeperBtn").addEventListener("click", async () => {
-        const Staff = document.getElementById("staff").value;
-        const idZookeeper = document.getElementById("idZookeeper").value;
-        
-        // Llamamos a la función para guardar el zoológico
-        await addzookeeper(Staff, idZookeeper);
-        alert("Zookeeper guardado.");
-      });
-
-  // Agregar Animal
-  document.getElementById("addAnimalBtn").addEventListener("click", async () => {
-    const zooId = document.getElementById("zooIdAnimal").value;
-    const animalId = document.getElementById("animalId").value;
-    const name = document.getElementById("animalName").value;
-    const species = document.getElementById("animalSpecies").value;
-    const age = parseInt(document.getElementById("animalAge").value);
-
-    const animalData = { name, species, age };
-
-    // Llamamos a la función para agregar el animal
-    await addAnimal(zooId, animalId, animalData);
-    alert("Animal agregado.");
-  });
-
-   // Agregar Enclosures
-   document.getElementById("addEnclosuresBtn").addEventListener("click", async () => {
-    const staffenclosures = document.getElementById("staffenclosures").value;
-    const enclosuresManaged = document.getElementById("enclosuresManaged").value;
-    const idEnclosures = document.getElementById("idEnclosures").value;
-    const namezookeeper = document.getElementById("namezookeeper").value;
-    const hireDate = document.getElementById("hireDate").value;
-    const lastName = document.getElementById("lastName").value;
-    const phone = document.getElementById("phone").value;
-    
-    
-    const zookeeperData = {name, hire_date, last_name, phone}
-
-    // Llamamos a la función para agregar el animal
-    await addEnclosures(idZookeeper, idEnclosures);
-    alert("Enclosures add.");
-  });
-
-  // Ver Animales de un Zoológico
-  document.getElementById("viewAnimalsBtn").addEventListener("click", async () => {
-    const zooId = document.getElementById("zooIdView").value;
-    
-    // Llamamos a la función para obtener los animales del zoológico
-    const animals = await getAnimalsByZoo(zooId);
-    
-    // Mostramos los animales en la página
-    const animalList = document.getElementById("animalList");
-    animalList.innerHTML = "";
-    animals.forEach(animal => {
-      const card = document.createElement("div");
-      card.className = "animal-card";
-      card.textContent = `🐾 ${animal.name} (${animal.gender}) - ${animal.date_of_birth} Birthday`;
-      animalList.appendChild(card);
-    });
-  });
-
-  // Filtrar Animales por Especie
-  document.getElementById("filterBySpeciesBtn").addEventListener("click", async () => {
-    const zooId = document.getElementById("zooIdSpecies").value;
-    const species = document.getElementById("speciesFilter").value;
-    
-    // Llamamos a la función para obtener los animales filtrados
-    const animals = await getAnimalsBySpecies(zooId, species);
-    
-    // Mostramos los animales filtrados
-    const speciesList = document.getElementById("speciesList");
-    speciesList.innerHTML = "";
-    animals.forEach(animal => {
-      const card = document.createElement("div");
-      card.className = "animal-card";
-      card.textContent = `🦎 ${animal.name} - ${animal.species}`;
-      speciesList.appendChild(card);
-    });
-  });
-
-  document.getElementById("filterAnimalsComplexBtn").addEventListener("click", async () => {
-  const { filtrarAnimalesCompuesto } = await import('./modules/firestore_service.js');
-
-  // Obtener los valores de los campos de texto
-  const zooId = document.getElementById("zooIdComplex").value;
-  const species = document.getElementById("speciesComplex").value;
-  const minAge = parseInt(document.getElementById("minAgeComplex").value, 10);
-
-  // Validar que los campos no estén vacíos
-  if (!zooId || !species || isNaN(minAge)) {
-    alert("Por favor, completa todos los campos.");
-    return;
-  }
-
-  // Llamar a la función para filtrar animales
-  const animals = await filtrarAnimalesCompuesto(zooId, species, minAge);
-
-  // Mostrar los resultados en la página
-  const resultsContainer = document.getElementById("complexQueryResults");
-  resultsContainer.innerHTML = ""; // Limpiar resultados previos
-  if (animals.length === 0) {
-    resultsContainer.textContent = "No se encontraron animales que coincidan con los criterios.";
-    return;
-  }
-
-  animals.forEach(animal => {
-    const card = document.createElement("div");
-    card.className = "animal-card";
-    card.textContent = `🦎 ${animal.name} - ${animal.species} (${animal.age} años)`;
-    resultsContainer.appendChild(card);
-  });
-});
-  </script>
-</body>
-</html>-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRUD de Firebase</title>
+  <title>CRUD Firebase</title>
   <script type="module" src="./modules/firestore_service.js"></script>
   <style>
     body {
@@ -335,36 +79,36 @@
   </style>
 </head>
 <body>
-  <h1>Ver Todos los Registros de la Base de Datos</h1>
+  <h1>View All Database Records</h1>
 
-  <button id="loadDataButton">Mostrar Datos</button>
+  <button id="loadDataButton">Show Data</button>
   <div>
     <h2>Add Zoo</h2>
     <label for="zooId">Zoo ID:</label>
-    <input type="text" id="zooId" placeholder="Ejemplo: zoo123">
+    <input type="text" id="zooId" placeholder="Example: zoo123">
     
     <label for="zooName">Zoo Name:</label>
-    <input type="text" id="zooName" placeholder="Ejemplo: Zoológico Nacional">
+    <input type="text" id="zooName" placeholder="Example: Zoo National">
   
-    <button id="saveZooBtn">Guardar Zoológico</button>
+    <button id="saveZooBtn">Save Zoo</button>
   </div>
 
   <div>
     <h2>Add Animal</h2>
     <label for="zooIdAnimal">Zoo ID:</label>
-    <input type="text" id="zooIdAnimal" placeholder="Ejemplo: zoo123">
+    <input type="text" id="zooIdAnimal" placeholder="Example: zoo123">
     
     <label for="animalId">Animal ID:</label>
-    <input type="text" id="animalId" placeholder="Ejemplo: animal456">
+    <input type="text" id="animalId" placeholder="Example: animal456">
     
     <label for="animalName"> Animal name:</label>
-    <input type="text" id="animalName" placeholder="Ejemplo: León">
+    <input type="text" id="animalName" placeholder="Example: Leon">
   
     <label for="animalSpecies">Animal Species:</label>
-    <input type="text" id="animalSpecies" placeholder="Ejemplo: León">
+    <input type="text" id="animalSpecies" placeholder="Example: Leon">
   
     <label for="animalAge">Animal Age:</label>
-    <input type="number" id="animalAge" placeholder="Ejemplo: 5">
+    <input type="number" id="animalAge" placeholder="Example: 5">
   
     <button id="addAnimalBtn">Add Animal</button>
   </div>
@@ -372,22 +116,22 @@
   <div>
     <h2>Add ZooKeeper</h2>
     <label for="staff">Staff:</label>
-    <input type="text" id="staff" placeholder="Ejemplo: Staff1">
+    <input type="text" id="staff" placeholder="Example: Staff1">
     
     <label for="idZookeeper">Zookeeper ID:</label>
-    <input type="text" id="idZookeeper" placeholder="Ejemplo: Juan">
+    <input type="text" id="idZookeeper" placeholder="Example: Juan">
 
     <label for="nameZookeeper">Zookeeper name.:</label>
-    <input type="text" id="nameZookeeper" placeholder="Ejemplo: Juan">
+    <input type="text" id="nameZookeeper" placeholder="Example: Juan">
 
     <label for="hireDate">Hire date:</label>
-    <input type="date" id="hireDate" placeholder="Ejemplo: 15/02/24">
+    <input type="date" id="hireDate" placeholder="Example: 15/02/24">
 
     <label for="lastName">Lastname:</label>
-    <input type="text" id="lastName" placeholder="Ejemplo: Rodriguez">
+    <input type="text" id="lastName" placeholder="Example: Rodriguez">
 
     <label for="phone">Phone:</label>
-    <input type="number" id="phone" placeholder="Ejemplo: 3118025836">
+    <input type="number" id="phone" placeholder="Example: 3118025836">
   
     <button id="saveZookeeperBtn">Guardar Zookeeper</button>
   </div>
@@ -395,7 +139,7 @@
   <div>
     <h2>See Zoo Animals</h2>
     <label for="zooIdView">ID del Zoológico:</label>
-    <input type="text" id="zooIdView" placeholder="Ejemplo: zoo123">
+    <input type="text" id="zooIdView" placeholder="Example: zoo123">
   
     <button id="viewAnimalsBtn">See Animals</button>
   
@@ -405,40 +149,28 @@
   <div>
     <h2>Add enclosures</h2>
     <label for="staffenclosures">Staff:</label>
-    <input type="text" id="staffenclosures" placeholder="Ejemplo: Staff1">
+    <input type="text" id="staffenclosures" placeholder="Example: Staff1">
     
     <label for="enclosuresManaged">Enclosures Managed:</label>
-    <input type="text" id="enclosuresManaged" placeholder="Ejemplo: 1234">
+    <input type="text" id="enclosuresManaged" placeholder="Example: 1234">
     
     <label for="idEnclosures">Enclosures:</label>
-    <input type="text" id="idEnclosures" placeholder="Ejemplo: LLano">
+    <input type="text" id="idEnclosures" placeholder="Example: Flat">
   
     <button id="addEnclosuresBtn">Add Enclosures</button>
   </div>
 
-  <!--<div>
-    <h2>Filter Animals by Species</h2>
-    <label for="zooIdSpecies">ID del Zoológico:</label>
-    <input type="text" id="zooIdSpecies" placeholder="Ejemplo: zoo123">
-  
-    <label for="speciesFilter">Especie:</label>
-    <input type="text" id="speciesFilter" placeholder="Ejemplo: León">
-  
-    <button id="filterBySpeciesBtn">Filter by Specie</button>
-  
-    <div id="speciesList"></div>
-  </div>-->
 
   <div>
     <h2>Filter Animals </h2>
     <label for="zooIdComplex">Zoo ID:</label>
-    <input type="text" id="zooIdComplex" placeholder="Ejemplo: zoo123">
+    <input type="text" id="zooIdComplex" placeholder="Example: zoo123">
   
     <label for="speciesComplex">Specie:</label>
-    <input type="text" id="speciesComplex" placeholder="Ejemplo: León">
+    <input type="text" id="speciesComplex" placeholder="Example: Lion">
   
     <label for="minAgeComplex">Minimum age:</label>
-    <input type="number" id="minAgeComplex" placeholder="Ejemplo: 3">
+    <input type="number" id="minAgeComplex" placeholder="Example: 3">
   
     <button id="filterAnimalsComplexBtn">Filter Animals</button>
   </div>
@@ -450,8 +182,8 @@
   
     const loadDataButton = document.getElementById('loadDataButton');
     loadDataButton.addEventListener('click', async () => {
-      const { mostrarTodo } = await import('./modules/firestore_service.js');
-      await mostrarTodo();
+      const { showAll } = await import('./modules/firestore_service.js');
+      await showAll();
     });
 
     document.getElementById("saveZooBtn").addEventListener("click", async () => {
@@ -501,34 +233,36 @@
     });
 
     document.getElementById("filterAnimalsComplexBtn").addEventListener("click", async () => {
-  const { filtrarAnimalesCompuesto } = await import('./modules/firestore_service.js');
+  const { filterAnimalComplex } = await import('./modules/firestore_service.js');
 
-  // Obtener los valores de los campos de texto
+  // Getting the values ​​from text fields
   const zooId = document.getElementById("zooIdComplex").value;
   const species = document.getElementById("speciesComplex").value;
   const minAge = parseInt(document.getElementById("minAgeComplex").value, 10);
 
-  // Validar que los campos no estén vacíos
+  // Validate that the fields are not empty
   if (!zooId || !species || isNaN(minAge)) {
     alert("Por favor, completa todos los campos.");
     return;
   }
 
-  // Llamar a la función para filtrar animales
-  const animals = await filtrarAnimalesCompuesto(zooId, species, minAge);
+  // Call the function to filter animals
+  const animals = await filterAnimalComplex(zooId, species, minAge);
 
-  // Mostrar los resultados en la página
+  // Display results on the page
   const resultsContainer = document.getElementById("complexQueryResults");
-  resultsContainer.innerHTML = ""; // Limpiar resultados previos
+  resultsContainer.innerHTML = ""; // Clear previous results
   if (animals.length === 0) {
-    resultsContainer.textContent = "No se encontraron animales que coincidan con los criterios.";
+    resultsContainer.textContent = "No animals were found matching the criteria.";
     return;
   }
+
+
 
   animals.forEach(animal => {
     const card = document.createElement("div");
     card.className = "animal-card";
-    card.textContent = `🦎 ${animal.name} - ${animal.species} (${animal.age} años)`;
+    card.textContent = `🦎 ${animal.name} - ${animal.species} (${animal.age} age)`;
     resultsContainer.appendChild(card);
   });
 });

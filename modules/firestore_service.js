@@ -1,19 +1,22 @@
 import { db } from './firebase_init.js';
 import { doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// Función para crear un zoológico
+
+// Function to create a zoo
 export const createZoo = async (zooId, zooName) => {
   const zooRef = doc(db, `Zoos/${zooId}`);
   await setDoc(zooRef, { name: zooName });
 };
 
-// Función para agregar un animal
+
+// Function to add an animal
 export const addAnimal = async (zooId, animalId, animalData) => {
   const animalRef = doc(db, `Zoos/${zooId}/Animals/${animalId}`);
   await setDoc(animalRef, animalData);
 };
 
-//Agregar cuidadores
+
+//Add caregivers
 export const addzookeeper = async (staff, idZookeeper,) => {
   const zookeeperRef = doc(db, `Staff/${idZookeeper}`);
   await setDoc(zookeeperRef, { name: staff });
@@ -24,7 +27,7 @@ export const addEnclosures = async (idZookeeper, idEnclosures) => {
   await setDoc(EnclosuredRef, { name: idEnclosures });
 };
 
-// Función para obtener todos los animales de un zoológico
+// Function to get all the animals in a zoo
 export const getAnimalsByZoo = async (zooId) => {
   const animalsRef = collection(db, `Zoos/${zooId}/Animals`);
   const snapshot = await getDocs(animalsRef);
@@ -32,7 +35,8 @@ export const getAnimalsByZoo = async (zooId) => {
   return animalsList;
 };
 
-// Función para obtener animales filtrados por especie
+
+// Function to obtain animals filtered by species
 export const getAnimalsBySpecies = async (zooId, species) => {
   const animalsRef = collection(db, `Zoos/${zooId}/Animals`);
   const q = query(animalsRef, where("species", "==", species));
@@ -41,7 +45,7 @@ export const getAnimalsBySpecies = async (zooId, species) => {
   return animalsList;
 };
 
-export async function mostrarTodo() {
+export async function showAll() {
   const staffSnapshot = await getDocs(collection(db, 'Staff'));
 
   for (const staffDoc of staffSnapshot.docs) {
@@ -64,22 +68,22 @@ export async function mostrarTodo() {
 }
 
 
-// Query compuesta: Filtrar animales por zoo_id, especie y edad
+// Compound query: Filter animals by zoo_id, species, and age
 export async function filtrarAnimalesCompuesto(zooId, species, minAge) {
   try {
-    const animalsCollection = collection(db, "Animals"); // Referencia a la colección "Animals"
+    const animalsCollection = collection(db, "Animals"); // Reference to the "Animals" collection
     const q = query(
       animalsCollection,
-      where("zoo_id", "==", zooId), // Condición 1: ID del zoológico
-      where("species", "==", species), // Condición 2: Especie
-      where("age", ">", minAge) // Condición 3: Edad mayor a minAge
+      where("zoo_id", "==", zooId), // Condition 1: Zoo ID
+      where("species", "==", species), // Condition 2: Species
+      where("age", ">", minAge) // Condition 3: Age greater than minAge
     );
 
-    const querySnapshot = await getDocs(q); // Ejecutar la consulta
+    const querySnapshot = await getDocs(q); // Run the quey
 
     const animals = [];
     querySnapshot.forEach((doc) => {
-      animals.push({ id: doc.id, ...doc.data() }); // Agregar cada documento al array
+      animals.push({ id: doc.id, ...doc.data() }); // Add each document to the array
     });
 
     console.log("Animales filtrados:", animals);
