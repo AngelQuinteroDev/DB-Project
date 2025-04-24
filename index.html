@@ -12,7 +12,7 @@
   <!-- Botón para cargar los registros -->
   <button id="loadDataButton">Mostrar Datos</button>
   <div>
-    <h2>Crear un Zoológico</h2>
+    <h2>Add Zoo</h2>
     <label for="zooId">ID del Zoológico:</label>
     <input type="text" id="zooId" placeholder="Ejemplo: zoo123">
     
@@ -23,7 +23,7 @@
   </div>
 
   <div>
-    <h2>Agregar un Animal</h2>
+    <h2>Add Animal</h2>
     <label for="zooIdAnimal">ID del Zoológico:</label>
     <input type="text" id="zooIdAnimal" placeholder="Ejemplo: zoo123">
     
@@ -47,8 +47,20 @@
     <label for="staff">Staff:</label>
     <input type="text" id="staff" placeholder="Ejemplo: Staff1">
     
-    <label for="idZookeeper">Nombre del Zoológico:</label>
+    <label for="idZookeeper">Zookeeper ID:</label>
     <input type="text" id="idZookeeper" placeholder="Ejemplo: Juan">
+
+    <label for="nameZookeeper">Zookeeper name.:</label>
+    <input type="text" id="nameZookeeper" placeholder="Ejemplo: Juan">
+
+    <label for="hireDate">Hire date:</label>
+    <input type="date" id="hireDate" placeholder="Ejemplo: 15/02/24">
+
+    <label for="lastName">Lastname:</label>
+    <input type="text" id="lastName" placeholder="Ejemplo: Rodriguez">
+
+    <label for="phone">Phone:</label>
+    <input type="number" id="phone" placeholder="Ejemplo: 3118025836">
   
     <button id="saveZookeeperBtn">Guardar Zookeeper</button>
   </div>
@@ -61,6 +73,20 @@
     <button id="viewAnimalsBtn">Ver Animales</button>
   
     <div id="animalList"></div>
+  </div>
+
+  <div>
+    <h2>Add enclosures</h2>
+    <label for="staffenclosures">Staff:</label>
+    <input type="text" id="staffenclosures" placeholder="Ejemplo: Staff1">
+    
+    <label for="enclosuresManaged">Enclosures Managed:</label>
+    <input type="text" id="enclosuresManaged" placeholder="Ejemplo: 1234">
+    
+    <label for="idEnclosures">Enclosures:</label>
+    <input type="text" id="idEnclosures" placeholder="Ejemplo: LLano">
+  
+    <button id="addEnclosuresBtn">Add Enclosures</button>
   </div>
 
   <div>
@@ -78,7 +104,7 @@
   
 
   <script type="module">
-    import { createZoo, addAnimal, addzookeeper, getAnimalsByZoo, getAnimalsBySpecies } from './modules/firestore_service.js';
+    import { createZoo, addAnimal, addzookeeper, addEnclosures, getAnimalsByZoo, getAnimalsBySpecies } from './modules/firestore_service.js';
   
     // Obtener el botón por su id
     const loadDataButton = document.getElementById('loadDataButton');
@@ -123,6 +149,24 @@
     // Llamamos a la función para agregar el animal
     await addAnimal(zooId, animalId, animalData);
     alert("Animal agregado.");
+  });
+
+   // Agregar Enclosures
+   document.getElementById("addEnclosuresBtn").addEventListener("click", async () => {
+    const staffenclosures = document.getElementById("staffenclosures").value;
+    const enclosuresManaged = document.getElementById("enclosuresManaged").value;
+    const idEnclosures = document.getElementById("idEnclosures").value;
+    const namezookeeper = document.getElementById("namezookeeper").value;
+    const hireDate = document.getElementById("hireDate").value;
+    const lastName = document.getElementById("lastName").value;
+    const phone = document.getElementById("phone").value;
+    
+    
+    const zookeeperData = {name, hire_date, last_name, phone}
+
+    // Llamamos a la función para agregar el animal
+    await addEnclosures(idZookeeper, idEnclosures);
+    alert("Enclosures add.");
   });
 
   // Ver Animales de un Zoológico
