@@ -1,8 +1,8 @@
-import { db } from './firebase-init';
+import { db } from './firebase_init.js';
 import {
-  collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc,
-  query, where, orderBy
-} from 'firebase/firestore';
+  collection, doc, getDoc, getDocs, setDoc,
+  updateDoc, deleteDoc, query, where, orderBy
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // 🔧 Referencias base
 const zoosRef = collection(db, 'Zoos');
